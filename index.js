@@ -33,6 +33,10 @@ module.exports = async function connectivityCheck (opts = {}) {
       if (err.response.status === 407) throw CCError.CONNECTIVITY_CHECK_AUTH_REQUIRED()
     }
 
+    if (err.code === 'ERR_BAD_RESPONSE') {
+      if (err.response.status === 502) throw CCError.CONNECTIVITY_CHECK_FAILED('Invalid proxy response')
+    }
+
     throw err
   }
 }
